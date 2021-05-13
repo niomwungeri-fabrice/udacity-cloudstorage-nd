@@ -16,6 +16,7 @@ public class File {
         this.contentType = contentType;
         this.fileSize = fileSize;
         this.userid = userId;
+        this.fileData = fileData;
     }
 
     public int getFileId() {

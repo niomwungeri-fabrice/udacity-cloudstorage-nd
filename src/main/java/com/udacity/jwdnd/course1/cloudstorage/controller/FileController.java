@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
+import com.google.common.primitives.Longs;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
@@ -48,13 +49,6 @@ public class FileController {
         return "home";
     }
 
-//    @RequestMapping(value = "/download/{fileId}", method = RequestMethod.GET)
-//    public ResponseEntity<Object> download(@RequestParam int fileId){
-//        com.udacity.jwdnd.course1.cloudstorage.model.File newFile = fileService.getOneFile(fileId);
-//        return ResponseEntity.ok()
-//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + newFile.getFilename() + "\"")
-//                .body(newFile);
-//    }
     @RequestMapping(value = "/download/{fileId}", method = RequestMethod.GET)
     public ResponseEntity<Resource> download(@PathVariable("fileId") Integer fileId) {
 
@@ -72,7 +66,7 @@ public class FileController {
 
 
     @RequestMapping(value = "/home/{fileId}", method = RequestMethod.GET)
-    public String handleDeleteUser(@PathVariable(name = "fileId") String fileId) {
+    public String deleteFile(@PathVariable(name = "fileId") String fileId) {
         fileService.deleteFile(Integer.valueOf(fileId));
         return "redirect:/home";
     }
@@ -80,7 +74,7 @@ public class FileController {
     @PostMapping("/home")
     public String uploadFile(@RequestParam("file") MultipartFile file, RedirectAttributes attributes, Principal principal) {
 
-        System.out.println(principal.getName());
+//        System.out.println(principal.getName());
         // check if file is empty
         if (file.isEmpty()) {
             attributes.addFlashAttribute("message", "Please select a file to upload.");
@@ -97,14 +91,16 @@ public class FileController {
             File myFile = Utility.multipartToFile(file);
             String mimeType = URLConnection.guessContentTypeFromName(myFile.getName());
             User loggedInUser = userService.getUser(principal.getName());
-            com.udacity.jwdnd.course1.cloudstorage.model.File newFile = new com.udacity.jwdnd.course1.cloudstorage.model.File(fileName, mimeType, Utility.getFileSizeKiloBytes(myFile), loggedInUser.getUserid(), Utility.longToBytes(Files.size(path)));
+            long si = Files.size(path);
+            byte[] bytes = Longs.toByteArray(si);
+            com.udacity.jwdnd.course1.cloudstorage.model.File newFile = new com.udacity.jwdnd.course1.cloudstorage.model.File(fileName, mimeType, file.getSize() * 0.0009765625 + "  kb", loggedInUser.getUserid(), bytes);
+            System.out.println(newFile);
             result = fileService.saveFile(newFile);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-
         // return success response
-        attributes.addFlashAttribute("message", result + fileName + '!');
+        attributes.addFlashAttribute("message", result +" "+ fileName + '!');
 
         return "redirect:/home";
     }

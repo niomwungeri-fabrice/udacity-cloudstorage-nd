@@ -5,8 +5,18 @@ public class File {
     private String filename;
     private String contentType;
     private String fileSize;
-    private int userId;
-    private byte fileData;
+    private int userid;
+    private byte[] fileData;
+
+    public File() {
+    }
+
+    public File(String filename, String contentType, String fileSize, int userId, byte []fileData) {
+        this.filename = filename;
+        this.contentType = contentType;
+        this.fileSize = fileSize;
+        this.userid = userId;
+    }
 
     public int getFileId() {
         return fileId;
@@ -40,19 +50,31 @@ public class File {
         this.fileSize = fileSize;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getUserid() {
+        return userid;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUserid(int userid) {
+        this.userid = userid;
     }
 
-    public byte getFileData() {
+    public byte[] getFileData() {
         return fileData;
     }
 
-    public void setFileData(byte fileData) {
+    public void setFileData(byte[] fileData) {
         this.fileData = fileData;
+    }
+
+    @Override
+    public String toString() {
+        return "File{" +
+                "fileId=" + fileId +
+                ", filename='" + filename + '\'' +
+                ", contentType='" + contentType + '\'' +
+                ", fileSize='" + fileSize + '\'' +
+                ", userId=" + userid +
+                ", fileData=" + fileData +
+                '}';
     }
 }

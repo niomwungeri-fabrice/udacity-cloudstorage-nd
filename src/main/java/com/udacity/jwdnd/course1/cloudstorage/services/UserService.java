@@ -32,4 +32,8 @@ public class UserService {
         System.out.println(userMapper.getUser(username) == null);
        return userMapper.getUser(username) == null;
     }
+
+    public User getUser(String username){
+        return userMapper.getUser(username);
+    }
 }

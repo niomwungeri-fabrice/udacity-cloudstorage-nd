@@ -25,11 +25,10 @@ public class UserService {
         String encodedSalt = Base64.getEncoder().encodeToString(salt);
         String hashedPassword = hashService.getHashedValue(user.getPassword(), encodedSalt);
 
-        return userMapper.createUser(new User(null, user.getUsername(), encodedSalt, hashedPassword, user.getFirstname(), user.getLastname()));
+        return userMapper.createUser(new User(user.getUsername(), encodedSalt, hashedPassword, user.getFirstname(), user.getLastname()));
     }
 
     public boolean isUserExist(String username) {
-        System.out.println(userMapper.getUser(username) == null);
        return userMapper.getUser(username) == null;
     }
 

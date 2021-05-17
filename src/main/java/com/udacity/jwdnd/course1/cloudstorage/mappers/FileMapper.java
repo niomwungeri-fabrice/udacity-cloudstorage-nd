@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.mappers;
 
+import com.udacity.jwdnd.course1.cloudstorage.model.Credential;
 import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import org.apache.ibatis.annotations.*;
 
@@ -17,9 +18,13 @@ public interface FileMapper extends GenericMapper<File> {
 
     @Delete("DELETE FROM FILES WHERE fileid = #{fileId}")
     @Override
-    void delete(int id);
+    int delete(int id);
 
     @Select("SELECT * FROM FILES WHERE fileid=#{fileId}")
     @Override
     File getOne(int id);
+    @Select("SELECT * FROM FILES WHERE USERID=#{id}")
+    @Override
+    List<File> getMyItems(int id);
+
 }
